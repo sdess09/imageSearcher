@@ -1,24 +1,23 @@
 import React, { useState, useEffect } from "react";
+import "./styles.css";
 
 interface Image {
   id: number;
   webformatURL: string;
-  tags: string;
 }
 
-const ImageSearch: React.FC = () => {
+const ImageSearchScreen = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [images, setImages] = useState<Image[]>([]);
 
   useEffect(() => {
-    const fetchImages = async () => {
-      const response = await fetch(
-        `https://pixabay.com/api/?key=33849339-fb93602f42ff2f00b7e52abb3&q=${searchTerm}`
-      );
-      const data = await response.json();
-      setImages(data.hits);
-    };
-    fetchImages();
+    if (searchTerm !== "") {
+      fetch(`https://pixabay.com/api/?key=33849339-fb93602f42ff2f00b7e52abb3&q=${searchTerm}`)
+        .then((response) => response.json())
+        .then((data) => setImages(data.hits));
+    } else {
+      setImages([]);
+    }
   }, [searchTerm]);
 
   const handleSearchTermChange = (
@@ -28,21 +27,34 @@ const ImageSearch: React.FC = () => {
   };
 
   const handleImageClick = (id: number) => {
-    // implement later 
-  };
+    // toDO
+  }
 
   return (
-    <div>
-      <input type="text" value={searchTerm} onChange={handleSearchTermChange} />
-      <ul>
-        {images.map((image) => (
-          <li key={image.id} onClick={() => handleImageClick(image.id)}>
-            <img src={image.webformatURL} alt={image.tags} />
-          </li>
-        ))}
-      </ul>
+    <div className="container">
+      <input
+        className="search-bar"
+        type="text"
+        placeholder="Search images"
+        value={searchTerm}
+        onChange={handleSearchTermChange}
+      />
+      {images.length > 0 && (
+        <ul className="image-list">
+          {images.map((image) => (
+            <li key={image.id}>
+              <img
+                className="image"
+                src={image.webformatURL}
+                alt="Image"
+                onClick={() => handleImageClick(image.id)}
+              />
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };
 
-export default ImageSearch;
+export default ImageSearchScreen;
