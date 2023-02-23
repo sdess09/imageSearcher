@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "./styles.css";
 
 interface Image {
   id: number;
   webformatURL: string;
+  user: string;
+  tags: string;
 }
 
 const ImageSearchScreen = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [images, setImages] = useState<Image[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (searchTerm !== "") {
@@ -27,8 +31,8 @@ const ImageSearchScreen = () => {
   };
 
   const handleImageClick = (id: number) => {
-    // toDO
-  }
+    navigate(`/image/${id}`);
+  };
 
   return (
     <div className="container">

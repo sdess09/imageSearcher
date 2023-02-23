@@ -1,11 +1,16 @@
-import React from 'react';
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ImageSearchScreen from "./ImageSearchScreen";
+import ImageDetailScreen from "./ImageDetailScreen";
 
 const App = () => {
   return (
-    <div>
-      <ImageSearchScreen />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<ImageSearchScreen />} />
+        <Route path="/image/:id" element={<ImageDetailScreen />} />
+      </Routes>
+    </BrowserRouter>
   );
 };
 
